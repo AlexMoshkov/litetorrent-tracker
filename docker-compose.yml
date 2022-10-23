@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: "tracker__app"
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:8000
+
+  postgres:
+    image: postgres:15
+    container_name: "tracker__db"
+    restart: always
+    volumes:
+      - "db_volume:/var/lib/postgresql/data/"
+    env_file:
+      - .env
+
+volumes:
+  db_volume:

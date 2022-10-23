@@ -5,8 +5,11 @@ import (
 )
 
 type Config struct {
-	Port string
-	// ...
+	Port string `mapstructure:"PORT"`
+
+	PostgresDB       string `mapstructure:"POSTGRES_DB"`
+	PostgresUser     string `mapstructure:"POSTGRES_USER"`
+	PostgresPassword string `mapstructure:"POSTGRES_PASSWORD"`
 }
 
 func Init() (*Config, error) {
@@ -15,9 +18,9 @@ func Init() (*Config, error) {
 		return nil, err
 	}
 
-	cnf := &Config{}
-	if err := viper.Unmarshal(cnf); err != nil {
+	cfg := &Config{}
+	if err := viper.Unmarshal(cfg); err != nil {
 		return nil, err
 	}
-	return cnf, nil
+	return cfg, nil
 }
