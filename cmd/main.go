@@ -4,6 +4,7 @@ import (
 	"context"
 	"litetorrent-tracker/config"
 	"litetorrent-tracker/internal"
+	"litetorrent-tracker/internal/db"
 	"litetorrent-tracker/pkg/server"
 	"log"
 	"os"
@@ -16,7 +17,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app := internal.NewApp(cfg)
+	dbClient, err := db.NewClient(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	app := internal.NewApp(cfg, dbClient)
 	srv := server.NewServer(cfg.Port, app.Router.GetApiRoutes())
 
 	go func() {

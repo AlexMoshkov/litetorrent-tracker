@@ -2,6 +2,8 @@ FROM golang:1.19.2
 
 WORKDIR /app
 
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
 COPY go.mod go.sum ./
 
 RUN go mod download

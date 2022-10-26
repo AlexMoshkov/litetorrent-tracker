@@ -7,9 +7,11 @@ services:
     env_file:
       - .env
     ports:
-      - ${PORT}:8000
+      - "${PORT}:8000"
+    depends_on:
+      - db
 
-  postgres:
+  db:
     image: postgres:15
     container_name: "tracker__db"
     restart: always
@@ -17,6 +19,8 @@ services:
       - "db_volume:/var/lib/postgresql/data/"
     env_file:
       - .env
+    ports:
+      - "5432:5432"
 
 volumes:
   db_volume:
