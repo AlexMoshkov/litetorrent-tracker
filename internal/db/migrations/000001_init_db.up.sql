@@ -1,25 +1,21 @@
 CREATE TABLE IF NOT EXISTS peer
 (
-    id      uuid NOT NULL,
-    address cidr NOT NULL,
-    CONSTRAINT id_pk PRIMARY KEY (id)
+    id      uuid PRIMARY KEY NOT NULL,
+    address varchar UNIQUE   NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS file
 (
-    hash varchar NOT NULL,
-    CONSTRAINT pk PRIMARY KEY (hash)
+    hash varchar PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS peer_file
 (
-    peer_id uuid    NOT NULL,
-    hash    varchar NOT NULL,
-    CONSTRAINT pk1 PRIMARY KEY (peer_id, hash),
-    CONSTRAINT fk1 FOREIGN KEY (peer_id) REFERENCES peer (id),
-    CONSTRAINT fk2 FOREIGN KEY (hash) REFERENCES file (hash)
+    peer_id uuid REFERENCES peer (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    hash    varchar REFERENCES file (hash) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT peer_file_pk PRIMARY KEY (peer_id, hash)
 );
 
-CREATE INDEX fk3 ON peer_file (peer_id);
+CREATE INDEX peer_index ON peer_file (peer_id);
 
-CREATE INDEX fk4 ON peer_file (hash);
+CREATE INDEX hash_index ON peer_file (hash);

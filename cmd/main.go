@@ -22,8 +22,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app := internal.NewApp(cfg, dbClient)
-	srv := server.NewServer(cfg.Port, app.Router.GetApiRoutes())
+	app := internal.NewApp(cfg, dbClient).Init()
+	srv := server.NewServer(cfg.Port, app.GetApiRouter())
 
 	go func() {
 		if err := srv.Start(); err != nil {
